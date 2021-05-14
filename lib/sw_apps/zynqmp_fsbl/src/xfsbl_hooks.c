@@ -29,6 +29,7 @@
 #include "xfsbl_hw.h"
 #include "xfsbl_hooks.h"
 #include "psu_init.h"
+#include "xfsbl_programSI.h"
 /************************** Constant Definitions *****************************/
 
 /**************************** Type Definitions *******************************/
@@ -93,6 +94,7 @@ u32 XFsbl_HookBeforeFallback(void)
 	/**
 	 * Add the code here
 	 */
+	ProgramSI();
 
 	return Status;
 }
