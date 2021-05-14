@@ -60,6 +60,7 @@ u32 XFsbl_HookAfterBSDownload(void )
 	/**
 	 * Add the code here
 	 */
+	ProgramSI();
 
 	return Status;
 }
@@ -94,7 +95,6 @@ u32 XFsbl_HookBeforeFallback(void)
 	/**
 	 * Add the code here
 	 */
-	ProgramSI();
 
 	return Status;
 }
