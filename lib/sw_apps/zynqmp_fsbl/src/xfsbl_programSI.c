@@ -117,23 +117,23 @@ void SiI2cWrite(u8 address,u8 data){
   while((Xil_In32(I2C_STATUS) & 0x4)){
     tries--;
     if(!tries){
-      PRINTF(DEBUG_GENERAL,"Timeout on 0x%02X @ 0x%02X\r\n",data,address);
+      PRINTF(ALWAYS,"Timeout on 0x%02X @ 0x%02X\r\n",data,address);
       break;
     }
   }
   //  usleep(50);
   Xil_Out32(I2C_CONTROL, 0x0);
 
-  //  PRINTF(DEBUG_GENERAL,"I2C Write: 0x%02X @ 0x%02X\r\n",data,address);
+  //  PRINTF(ALWAYS,"I2C Write: 0x%02X @ 0x%02X\r\n",data,address);
 }
 
 
 void ProgramSI(){
   /*https://www.beyond-circuits.com/wordpress/2018/05/updating-the-first-stage-bootloader-in-petalinux-v2017-4/*/
-  PRINTF(DEBUG_GENERAL,"\r\n\r\n\r\n\r\n\r\n");
-  PRINTF(DEBUG_GENERAL,"========================================\r\n");
-  PRINTF(DEBUG_GENERAL,"Programming Si-5344 \r\n");
-  PRINTF(DEBUG_GENERAL,"Si status:    0x%08X\r\n",Xil_In32(SI_CONFIG_BASE_ADDR));
+  PRINTF(ALWAYS,"\r\n\r\n\r\n\r\n\r\n");
+  PRINTF(ALWAYS,"========================================\r\n");
+  PRINTF(ALWAYS,"Programming Si-5344 \r\n");
+  PRINTF(ALWAYS,"Si status:    0x%08X\r\n",Xil_In32(SI_CONFIG_BASE_ADDR));
   
   Xil_Out32(SI_CONFIG_BASE_ADDR,0x2);
   u16 iWrite=0;
@@ -146,7 +146,7 @@ void ProgramSI(){
     SiI2cWrite((u8)((ConfigData[iWrite] >> 8) & 0xFF)  ,
 	       (u8)((ConfigData[iWrite]     ) & 0xFF));
   }
-  PRINTF(DEBUG_GENERAL,"Waiting for lock\r\n");
+  PRINTF(ALWAYS,"Waiting for lock\r\n");
   
   Xil_Out32(SI_CONFIG_BASE_ADDR,0x3);
   usleep(1000000); //wait 1s
@@ -157,13 +157,13 @@ void ProgramSI(){
     usleep(1000);
     tries--;
     if(!tries){
-      PRINTF(DEBUG_GENERAL,"Warning: Timeout waiting for Si lock\r\n");
+      PRINTF(ALWAYS,"Warning: Timeout waiting for Si lock\r\n");
       break;
     }
   }
   
-  PRINTF(DEBUG_GENERAL,"Si status:    0x%08X\r\n",Xil_In32(SI_CONFIG_BASE_ADDR));
-  PRINTF(DEBUG_GENERAL,"========================================\r\n");
-  PRINTF(DEBUG_GENERAL,"\r\n\r\n\r\n\r\n\r\n");
+  PRINTF(ALWAYS,"Si status:    0x%08X\r\n",Xil_In32(SI_CONFIG_BASE_ADDR));
+  PRINTF(ALWAYS,"========================================\r\n");
+  PRINTF(ALWAYS,"\r\n\r\n\r\n\r\n\r\n");
   
 }
