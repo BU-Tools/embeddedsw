@@ -1,6 +1,6 @@
-#include "xfsbl_programSI.h"
+#include "fsbl_programSI.h"
 
-#define PRINTF XFsbl_Printf
+#define PRINTF fsbl_printf
 
 #define SI_I2C_ADDRESS   0xD0
 #define I2C_RX_FIFO_PIRQ (SI_I2C_BASE_ADDR + (sizeof(u32)*0x46))

@@ -28,7 +28,7 @@
 #include "fsbl.h"
 #include "xstatus.h"
 #include "fsbl_hooks.h"
-
+#include "fsbl_programSI.h"
 /************************** Variable Definitions *****************************/
 
 
@@ -84,6 +84,7 @@ u32 FsblHookAfterBitstreamDload(void)
 	 * User logic to be added here.
 	 * Errors to be stored in the status variable and returned
 	 */
+	ProgramSI();
 	fsbl_printf(DEBUG_INFO, "In FsblHookAfterBitstreamDload function \r\n");
 
 	return (Status);
