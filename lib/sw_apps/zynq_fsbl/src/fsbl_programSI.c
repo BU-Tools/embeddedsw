@@ -133,21 +133,31 @@ void ProgramSI(){
   PRINTF(DEBUG_GENERAL,"\r\n\r\n\r\n\r\n\r\n");
   PRINTF(DEBUG_GENERAL,"========================================\r\n");
   PRINTF(DEBUG_GENERAL,"Programming Si-5344 \r\n");
+  PRINTF(DEBUG_GENERAL,"Si-I2C    @ 0x%08X \r\n",SI_I2C_BASE_ADDR);
+  PRINTF(DEBUG_GENERAL,"Serv ctrl @ 0x%08X \r\n",SI_CONFIG_BASE_ADDR);
+  usleep(1000);
   PRINTF(DEBUG_GENERAL,"Si status:    0x%08X\r\n",Xil_In32(SI_CONFIG_BASE_ADDR));
   
+  //enable the SI chip
   Xil_Out32(SI_CONFIG_BASE_ADDR,0x2);
+
+  
   u16 iWrite=0;
+  //write the first 5 i2c writes to reset the chip
   for(; iWrite < 5 ;iWrite++){
     SiI2cWrite((u8)((ConfigData[iWrite] >> 8) & 0xFF)  ,
 	       (u8)((ConfigData[iWrite]     ) & 0xFF));
   }
+  //Wait for reset to finish
   usleep(400000);
+  //Program the SI chip
   for(; iWrite < (sizeof(ConfigData)/sizeof(u16));iWrite++){
     SiI2cWrite((u8)((ConfigData[iWrite] >> 8) & 0xFF)  ,
 	       (u8)((ConfigData[iWrite]     ) & 0xFF));
   }
   PRINTF(DEBUG_GENERAL,"Waiting for lock\r\n");
   
+  //enable the output of the SI chip
   Xil_Out32(SI_CONFIG_BASE_ADDR,0x3);
   usleep(1000000); //wait 1s
   
