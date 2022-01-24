@@ -23544,7 +23544,8 @@ static int serdes_illcalib (u32 lane3_protocol, u32 lane3_rate, u32 lane2_protoc
       serdes_illcalib_pcie_gen1 (0, 0, 1, 0, 0, 0, 0, 0, 0);
      //Revert the ILL settings to SATA-Gen2 case
       Xil_Out32(SERDES_L2_PLL_FBDIV_FRAC_3_MSB,temp_pll_fbdiv_frac_3_msb_offset);
-      Xil_Out32(SERDES_PLL_REF_SEL3_OFFSET, temp_PLL_REF_SEL_OFFSET);
+      //      Xil_Out32(SERDES_PLL_REF_SEL3_OFFSET, temp_PLL_REF_SEL_OFFSET);
+      Xil_Out32(SERDES_PLL_REF_SEL2_OFFSET, temp_PLL_REF_SEL_OFFSET);
       Xil_Out32(SERDES_L2_TM_IQ_ILL1,temp_TM_IQ_ILL1);
       Xil_Out32(SERDES_L2_TX_DIG_TM_61, temp_tx_dig_tm_61);
       Xil_Out32(SERDES_L2_TM_DIG_6, temp_tm_dig_6);
