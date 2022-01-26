@@ -20223,7 +20223,7 @@ unsigned long psu_serdes_init_data(void)
     /*
     * SERDES ILL CALIB
     */
-		serdes_illcalib(2,3,3,0,4,0,1,1);
+	//dan 2022-01-26		serdes_illcalib(2,3,3,0,4,0,1,1);
 
 /*##################################################################### */
 
