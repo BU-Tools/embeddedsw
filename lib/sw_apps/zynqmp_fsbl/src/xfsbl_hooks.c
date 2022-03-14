@@ -30,6 +30,7 @@
 #include "xfsbl_hooks.h"
 #include "psu_init.h"
 #include "xfsbl_programSI.h"
+#include "si_data.h"        //structures storing si programming data
 /************************** Constant Definitions *****************************/
 
 /**************************** Type Definitions *******************************/
@@ -60,6 +61,12 @@ u32 XFsbl_HookAfterBSDownload(void )
 	/**
 	 * Add the code here
 	 */
+	fsbl_printf(DEBUG_INFO,"In XFsblHookAfterBSDownload function \r\n");
+	//Call the init function to initialize the siconfig structures
+	siConfigInit();
+	for(u32 iConfig = 0; iConfig < siConfigCount;iConfig++){
+	  ProgramSI(siConfigs[iConfig]);
+	}
 	ProgramSI();
 
 	return Status;
