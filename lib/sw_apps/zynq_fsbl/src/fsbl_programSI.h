@@ -38,7 +38,7 @@ extern "C" {
   } sProgramSI;
 
   //call for programming a full SI chip
-  void ProgramSI(sProgramSi config);
+  void ProgramSI(sProgramSI config);
 
 #ifdef __cplusplus
 }
