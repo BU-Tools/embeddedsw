@@ -28,7 +28,8 @@
 #include "fsbl.h"
 #include "xstatus.h"
 #include "fsbl_hooks.h"
-#include "fsbl_programSI.h"
+#include "fsbl_programSI.h" //code for programming an Si chip
+#include "si_data.h"        //structures storing si programming data
 /************************** Variable Definitions *****************************/
 
 
@@ -112,7 +113,12 @@ u32 FsblHookBeforeHandoff(void)
 	 * Errors to be stored in the status variable and returned
 	 */
 	fsbl_printf(DEBUG_INFO,"In FsblHookBeforeHandoff function \r\n");
-	ProgramSI();
+	//Call the init function to initialize the siconfig structures
+	siConfigInit();
+	for(u32 iConfig = 0; iConfig < siConfigCount;iConfig++){
+	  ProgramSI(siConfigs[iConfig]);
+	}
+
 
 	return (Status);
 }
