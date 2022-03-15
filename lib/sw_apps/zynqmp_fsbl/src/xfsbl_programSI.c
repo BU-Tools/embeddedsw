@@ -12,12 +12,8 @@ void SiI2cWrite(u32 axi_base_address, u8 i2c_address, u8 address,u8 data){
 
   UINTPTR addr_I2C_RESET   = axi_base_address + OFFSET_I2C_RESET  ;
   UINTPTR addr_I2C_CONTROL = axi_base_address + OFFSET_I2C_CONTROL;
-  UINTPTR addr_I2C_CONTROL = axi_base_address + OFFSET_I2C_CONTROL;
   UINTPTR addr_I2C_TX_FIFO = axi_base_address + OFFSET_I2C_TX_FIFO;
-  UINTPTR addr_I2C_TX_FIFO = axi_base_address + OFFSET_I2C_TX_FIFO;
-  UINTPTR addr_I2C_TX_FIFO = axi_base_address + OFFSET_I2C_TX_FIFO;
-  UINTPTR addr_I2C_CONTROL = axi_base_address + OFFSET_I2C_CONTROL;
-
+  UINTPTR addr_I2C_STATUS  = axi_base_address + OFFSET_I2C_STATUS;
 
   Xil_Out32(addr_I2C_RESET    ,(u32) 0xA);
   Xil_Out32(addr_I2C_CONTROL  ,(u32)0x2);
@@ -29,7 +25,7 @@ void SiI2cWrite(u32 axi_base_address, u8 i2c_address, u8 address,u8 data){
   u16 tries = 20000;
   //Time out of something isn't working
   //  while(!(Xil_In32(I2C_STATUS) & 0x80)){
-  while( (Xil_In32( ( axi_base_address+OFFSET_I2C_STATUS ) ) & 0x4 ) ){
+  while( (Xil_In32( addr_I2C_STATUS ) & 0x4 ) ){
     tries--;
     if(!tries){
       PRINTF(DEBUG_GENERAL,"Timeout on 0x%02X @ 0x%02X\r\n",data,address);
@@ -37,7 +33,7 @@ void SiI2cWrite(u32 axi_base_address, u8 i2c_address, u8 address,u8 data){
     }
   }
   //  usleep(50);
-  Xil_Out32((axi_base_address + OFFSET_I2C_CONTROL), 0x0);
+  Xil_Out32(addr_I2C_CONTROL, 0x0);
 
   //  PRINTF(DEBUG_GENERAL,"I2C Write: 0x%02X @ 0x%02X\r\n",data,address);
 }
