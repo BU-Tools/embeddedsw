@@ -67,7 +67,6 @@ u32 XFsbl_HookAfterBSDownload(void )
 	for(u32 iConfig = 0; iConfig < siConfigCount;iConfig++){
 	  ProgramSI(siConfigs[iConfig]);
 	}
-	ProgramSI();
 
 	return Status;
 }
