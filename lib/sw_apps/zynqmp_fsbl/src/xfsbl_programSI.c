@@ -8,13 +8,24 @@
 #define OFFSET_I2C_RESET        (sizeof(u32)*0x10))
 
 void SiI2cWrite(u32 axi_base_address, u8 i2c_address, u8 address,u8 data){
-  Xil_Out32(axi_base_address + OFFSET_I2C_RESET    ,(u32) 0xA);
-  Xil_Out32(axi_base_address + OFFSET_I2C_CONTROL  ,(u32)0x2);
-  Xil_Out32(axi_base_address + OFFSET_I2C_CONTROL  ,(u32)0xC);
-  Xil_Out32(axi_base_address + OFFSET_I2C_TX_FIFO  ,(u32)(0x100 | (u32)i2c_address));
-  Xil_Out32(axi_base_address + OFFSET_I2C_TX_FIFO  ,(u32) address );
-  Xil_Out32(axi_base_address + OFFSET_I2C_TX_FIFO  ,(u32)(0x200 | (u32)data));
-  Xil_Out32(axi_base_address + OFFSET_I2C_CONTROL  ,(u32) 0xD);
+  
+
+  UINTPTR addr_I2C_RESET   = axi_base_address + OFFSET_I2C_RESET  ;
+  UINTPTR addr_I2C_CONTROL = axi_base_address + OFFSET_I2C_CONTROL;
+  UINTPTR addr_I2C_CONTROL = axi_base_address + OFFSET_I2C_CONTROL;
+  UINTPTR addr_I2C_TX_FIFO = axi_base_address + OFFSET_I2C_TX_FIFO;
+  UINTPTR addr_I2C_TX_FIFO = axi_base_address + OFFSET_I2C_TX_FIFO;
+  UINTPTR addr_I2C_TX_FIFO = axi_base_address + OFFSET_I2C_TX_FIFO;
+  UINTPTR addr_I2C_CONTROL = axi_base_address + OFFSET_I2C_CONTROL;
+
+
+  Xil_Out32(addr_I2C_RESET    ,(u32) 0xA);
+  Xil_Out32(addr_I2C_CONTROL  ,(u32)0x2);
+  Xil_Out32(addr_I2C_CONTROL  ,(u32)0xC);
+  Xil_Out32(addr_I2C_TX_FIFO  ,(u32)(0x100 | (u32)i2c_address));
+  Xil_Out32(addr_I2C_TX_FIFO  ,(u32) address );
+  Xil_Out32(addr_I2C_TX_FIFO  ,(u32)(0x200 | (u32)data));
+  Xil_Out32(addr_I2C_CONTROL  ,(u32) 0xD);
   u16 tries = 20000;
   //Time out of something isn't working
   //  while(!(Xil_In32(I2C_STATUS) & 0x80)){
