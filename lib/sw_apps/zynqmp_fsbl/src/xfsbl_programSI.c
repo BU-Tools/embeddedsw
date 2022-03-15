@@ -32,7 +32,7 @@ void SiI2cWrite(u32 axi_base_address, u8 i2c_address, u8 address,u8 data){
 }
 
 
-void ProgramSI(sProgramSi config){
+void ProgramSI(sProgramSI config){
   /*https://www.beyond-circuits.com/wordpress/2018/05/updating-the-first-stage-bootloader-in-petalinux-v2017-4/*/
   PRINTF(DEBUG_GENERAL,"\r\n\r\n\r\n\r\n\r\n");
   PRINTF(DEBUG_GENERAL,"========================================\r\n");
