@@ -1,5 +1,12 @@
 #include "xfsbl_programSI.h"
 
+#define OFFSET_I2C_RX_FIFO_PIRQ (sizeof(u32)*0x46))
+#define OFFSET_I2C_CONTROL      (sizeof(u32)*0x40))
+#define OFFSET_I2C_STATUS       (sizeof(u32)*0x41))
+#define OFFSET_I2C_RX_FIFO      (sizeof(u32)*0x43))
+#define OFFSET_I2C_TX_FIFO      (sizeof(u32)*0x42))
+#define OFFSET_I2C_RESET        (sizeof(u32)*0x10))
+
 void SiI2cWrite(u32 axi_base_address, u8 i2c_address, u8 address,u8 data){
   Xil_Out32(axi_base_address + OFFSET_I2C_RESET    ,(u32) 0xA);
   Xil_Out32(axi_base_address + OFFSET_I2C_CONTROL  ,(u32)0x2);
