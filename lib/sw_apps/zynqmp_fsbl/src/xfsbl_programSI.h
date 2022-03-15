@@ -1,10 +1,6 @@
 #ifndef XFSBL_PROGRAMSI_H
 #define XFSBL_PROGRAMSI_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #define PRINTF fsbl_printf
 #define SI_I2C_ADDRESS   0xD0
 #define OFFSET_I2C_RX_FIFO_PIRQ (sizeof(u32)*0x46))
@@ -16,6 +12,12 @@ extern "C" {
 
 #include "xfsbl_hw.h"
 #include "xil_types.h"
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 
   //Code for writing to an si chip via i2c
   void SiI2cWrite(u32 axi_base_address, u8 i2c_address,u8 address,u8 data);
