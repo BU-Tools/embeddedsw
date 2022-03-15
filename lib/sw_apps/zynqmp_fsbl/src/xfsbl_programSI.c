@@ -1,13 +1,13 @@
 #include "xfsbl_programSI.h"
 
 void SiI2cWrite(u32 axi_base_address, u8 i2c_address, u8 address,u8 data){
-  Xil_Out32(UINTPTR(axi_base_address + OFFSET_I2C_RESET  )  ,(u32)(0xA));
-  Xil_Out32(UINTPTR(axi_base_address + OFFSET_I2C_CONTROL)  ,(u32)(0x2));
-  Xil_Out32(UINTPTR(axi_base_address + OFFSET_I2C_CONTROL)  ,(u32)(0xC));
-  Xil_Out32(UINTPTR(axi_base_address + OFFSET_I2C_TX_FIFO)  ,(u32)(0x100 | ((u32)i2c_address)));
-  Xil_Out32(UINTPTR(axi_base_address + OFFSET_I2C_TX_FIFO)  ,(u32)((u32) address));
-  Xil_Out32(UINTPTR(axi_base_address + OFFSET_I2C_TX_FIFO)  ,(u32)(0x200 | ((u32)data)));
-  Xil_Out32(UINTPTR(axi_base_address + OFFSET_I2C_CONTROL)  ,(u32)( 0xD));
+  Xil_Out32((UINTPTR)(axi_base_address + OFFSET_I2C_RESET  )  ,(u32)(0xA));
+  Xil_Out32((UINTPTR)(axi_base_address + OFFSET_I2C_CONTROL)  ,(u32)(0x2));
+  Xil_Out32((UINTPTR)(axi_base_address + OFFSET_I2C_CONTROL)  ,(u32)(0xC));
+  Xil_Out32((UINTPTR)(axi_base_address + OFFSET_I2C_TX_FIFO)  ,(u32)(0x100 | ((u32)i2c_address)));
+  Xil_Out32((UINTPTR)(axi_base_address + OFFSET_I2C_TX_FIFO)  ,(u32)((u32) address));
+  Xil_Out32((UINTPTR)(axi_base_address + OFFSET_I2C_TX_FIFO)  ,(u32)(0x200 | ((u32)data)));
+  Xil_Out32((UINTPTR)(axi_base_address + OFFSET_I2C_CONTROL)  ,(u32)( 0xD));
   u16 tries = 20000;
   //Time out of something isn't working
   //  while(!(Xil_In32(I2C_STATUS) & 0x80)){
