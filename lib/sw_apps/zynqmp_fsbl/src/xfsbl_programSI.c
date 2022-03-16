@@ -105,7 +105,7 @@ void ProgramSI(sProgramSI config){
   u16 tries = 20000;
   //Waitinf for lock
   if(config.si_locked_AXIAddr != 0){
-    while((Xil_In32(config.si_locked_AXIAddr) & config.si_locked_MASK)){ //usually 6
+    while((Xil_In32(config.si_locked_AXIAddr) & config.si_locked_MASK) != config.si_locked_MASK){ //usually 6
       usleep(1000);
       tries--;
       if(!tries){
