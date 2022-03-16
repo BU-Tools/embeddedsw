@@ -47,18 +47,21 @@ void ProgramSI(sProgramSI config){
 	 config.name);
   PRINTF(DEBUG_GENERAL,"AXI I2C   @ 0x%08X \r\n",
 	 config.i2c_AXIBaseAddr);//SI_I2C_BASE_ADDR);
-  PRINTF(DEBUG_GENERAL,"Si enable        @ 0x%08X(0x%08X) Val: 0x%08X \r\n",
+  PRINTF(DEBUG_GENERAL,"Si enable        @ 0x%08X(0x%08X)\r\n",
 	 config.si_enable_AXIAddr,
-	 config.si_enable_MASK,
-	 Xil_In32(config.si_enable_AXIAddr) & config.si_enable_MASK);//SI_CONFIG_BASE_ADDR);
-  PRINTF(DEBUG_GENERAL,"Si output enable @ 0x%08X(0x%08X) Val: 0x%08X \r\n",
+	 config.si_enable_MASK);
+  PRINTF(DEBUG_GENERAL,"                 Val:        (0x%08X)\r\n",
+	 Xil_In32(config.si_enable_AXIAddr) & config.si_enable_MASK);
+  PRINTF(DEBUG_GENERAL,"Si output enable @ 0x%08X(0x%08X)\r\n",
 	 config.si_oe_AXIAddr,
-	 config.si_oe_MASK,
-	 Xil_In32(config.si_oe_AXIAddr) & config.si_oe_MASK);//SI_CONFIG_BASE_ADDR);
-  PRINTF(DEBUG_GENERAL,"Si locked        @ 0x%08X(0x%08X) Val: 0x%08X \r\n",
+	 config.si_oe_MASK);
+  PRINTF(DEBUG_GENERAL,"                 Val:        (0x%08X)\r\n",
+	 Xil_In32(config.si_oe_AXIAddr) & config.si_oe_MASK);
+  PRINTF(DEBUG_GENERAL,"Si lock          @ 0x%08X(0x%08X)\r\n",
 	 config.si_locked_AXIAddr,
-	 config.si_locked_MASK,
-	 Xil_In32(config.si_locked_AXIAddr) & config.si_locked_MASK);//SI_CONFIG_BASE_ADDR);
+	 config.si_locked_MASK);
+  PRINTF(DEBUG_GENERAL,"                 Val:        (0x%08X)\r\n",
+	 Xil_In32(config.si_locked_AXIAddr) & config.si_locked_MASK);
   
   
   //Disable the output of the SI chip
@@ -111,6 +114,12 @@ void ProgramSI(sProgramSI config){
       }
     }
   }
+  PRINTF(DEBUG_GENERAL,"Si lock          @ 0x%08X(0x%08X)\r\n",
+	 config.si_locked_AXIAddr,
+	 config.si_locked_MASK);
+  PRINTF(DEBUG_GENERAL,"                 Val:        (0x%08X)\r\n",
+	 Xil_In32(config.si_locked_AXIAddr) & config.si_locked_MASK);
+
   
   PRINTF(DEBUG_GENERAL,"========================================\r\n");
   PRINTF(DEBUG_GENERAL,"\r\n\r\n\r\n\r\n\r\n");
