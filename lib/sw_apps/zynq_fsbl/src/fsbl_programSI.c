@@ -1,17 +1,31 @@
 #include "fsbl_programSI.h"
 
+#define OFFSET_I2C_RX_FIFO_PIRQ (sizeof(u32)*0x46)
+#define OFFSET_I2C_CONTROL      (sizeof(u32)*0x40)
+#define OFFSET_I2C_STATUS       (sizeof(u32)*0x41)
+#define OFFSET_I2C_RX_FIFO      (sizeof(u32)*0x43)
+#define OFFSET_I2C_TX_FIFO      (sizeof(u32)*0x42)
+#define OFFSET_I2C_RESET        (sizeof(u32)*0x10)
+
 void SiI2cWrite(u32 axi_base_address, u8 i2c_address, u8 address,u8 data){
-  Xil_Out32(axi_base_address + OFFSET_I2C_RESET    , 0xA);
-  Xil_Out32(axi_base_address + OFFSET_I2C_CONTROL  , 0x2);
-  Xil_Out32(axi_base_address + OFFSET_I2C_CONTROL  , 0xC);
-  Xil_Out32(axi_base_address + OFFSET_I2C_TX_FIFO  , 0x100 | ((u32)i2c_address));
-  Xil_Out32(axi_base_address + OFFSET_I2C_TX_FIFO  , (u32) address);
-  Xil_Out32(axi_base_address + OFFSET_I2C_TX_FIFO  , 0x200 | ((u32)data));
-  Xil_Out32(axi_base_address + OFFSET_I2C_CONTROL  , 0xD);
+  
+
+  UINTPTR addr_I2C_RESET   = axi_base_address + OFFSET_I2C_RESET  ;
+  UINTPTR addr_I2C_CONTROL = axi_base_address + OFFSET_I2C_CONTROL;
+  UINTPTR addr_I2C_TX_FIFO = axi_base_address + OFFSET_I2C_TX_FIFO;
+  UINTPTR addr_I2C_STATUS  = axi_base_address + OFFSET_I2C_STATUS;
+
+  Xil_Out32(addr_I2C_RESET    ,(u32) 0xA);
+  Xil_Out32(addr_I2C_CONTROL  ,(u32)0x2);
+  Xil_Out32(addr_I2C_CONTROL  ,(u32)0xC);
+  Xil_Out32(addr_I2C_TX_FIFO  ,(u32)(0x100 | (u32)i2c_address));
+  Xil_Out32(addr_I2C_TX_FIFO  ,(u32) address );
+  Xil_Out32(addr_I2C_TX_FIFO  ,(u32)(0x200 | (u32)data));
+  Xil_Out32(addr_I2C_CONTROL  ,(u32) 0xD);
   u16 tries = 20000;
   //Time out of something isn't working
   //  while(!(Xil_In32(I2C_STATUS) & 0x80)){
-  while((Xil_In32(axi_base_address+OFFSET_I2C_STATUS) & 0x4)){
+  while( (Xil_In32( addr_I2C_STATUS ) & 0x4 ) ){
     tries--;
     if(!tries){
       PRINTF(DEBUG_GENERAL,"Timeout on 0x%02X @ 0x%02X\r\n",data,address);
@@ -19,13 +33,13 @@ void SiI2cWrite(u32 axi_base_address, u8 i2c_address, u8 address,u8 data){
     }
   }
   //  usleep(50);
-  Xil_Out32(axi_base_address + OFFSET_I2C_CONTROL, 0x0);
+  Xil_Out32(addr_I2C_CONTROL, 0x0);
 
   //  PRINTF(DEBUG_GENERAL,"I2C Write: 0x%02X @ 0x%02X\r\n",data,address);
 }
 
 
-void ProgramSI(sProgramSi config){
+void ProgramSI(sProgramSI config){
   /*https://www.beyond-circuits.com/wordpress/2018/05/updating-the-first-stage-bootloader-in-petalinux-v2017-4/*/
   PRINTF(DEBUG_GENERAL,"\r\n\r\n\r\n\r\n\r\n");
   PRINTF(DEBUG_GENERAL,"========================================\r\n");
@@ -33,18 +47,21 @@ void ProgramSI(sProgramSi config){
 	 config.name);
   PRINTF(DEBUG_GENERAL,"AXI I2C   @ 0x%08X \r\n",
 	 config.i2c_AXIBaseAddr);//SI_I2C_BASE_ADDR);
-  PRINTF(DEBUG_GENERAL,"Si enable        @ 0x%08X(0x%08X) Val: 0x%08X \r\n",
+  PRINTF(DEBUG_GENERAL,"Si enable        @ 0x%08X(0x%08X)\r\n",
 	 config.si_enable_AXIAddr,
-	 config.si_enable_MASK,
-	 Xil_In32(config.si_enable_AXIAddr) & config.si_enable_MASK);//SI_CONFIG_BASE_ADDR);
-  PRINTF(DEBUG_GENERAL,"Si output enable @ 0x%08X(0x%08X) Val: 0x%08X \r\n",
+	 config.si_enable_MASK);
+  PRINTF(DEBUG_GENERAL,"                 Val:        (0x%08X)\r\n",
+	 Xil_In32(config.si_enable_AXIAddr) & config.si_enable_MASK);
+  PRINTF(DEBUG_GENERAL,"Si output enable @ 0x%08X(0x%08X)\r\n",
 	 config.si_oe_AXIAddr,
-	 config.si_oe_MASK,
-	 Xil_In32(config.si_oe_AXIAddr) & config.si_oe_MASK);//SI_CONFIG_BASE_ADDR);
-  PRINTF(DEBUG_GENERAL,"Si locked        @ 0x%08X(0x%08X) Val: 0x%08X \r\n",
+	 config.si_oe_MASK);
+  PRINTF(DEBUG_GENERAL,"                 Val:        (0x%08X)\r\n",
+	 Xil_In32(config.si_oe_AXIAddr) & config.si_oe_MASK);
+  PRINTF(DEBUG_GENERAL,"Si lock          @ 0x%08X(0x%08X)\r\n",
 	 config.si_locked_AXIAddr,
-	 config.si_locked_MASK,
-	 Xil_In32(config.si_locked_AXIAddr) & config.si_locked_MASK);//SI_CONFIG_BASE_ADDR);
+	 config.si_locked_MASK);
+  PRINTF(DEBUG_GENERAL,"                 Val:        (0x%08X)\r\n",
+	 Xil_In32(config.si_locked_AXIAddr) & config.si_locked_MASK);
   
   
   //Disable the output of the SI chip
@@ -97,6 +114,12 @@ void ProgramSI(sProgramSi config){
       }
     }
   }
+  PRINTF(DEBUG_GENERAL,"Si lock          @ 0x%08X(0x%08X)\r\n",
+	 config.si_locked_AXIAddr,
+	 config.si_locked_MASK);
+  PRINTF(DEBUG_GENERAL,"                 Val:        (0x%08X)\r\n",
+	 Xil_In32(config.si_locked_AXIAddr) & config.si_locked_MASK);
+
   
   PRINTF(DEBUG_GENERAL,"========================================\r\n");
   PRINTF(DEBUG_GENERAL,"\r\n\r\n\r\n\r\n\r\n");
