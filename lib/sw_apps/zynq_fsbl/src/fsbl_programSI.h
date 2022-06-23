@@ -1,7 +1,7 @@
 #ifndef FSBL_PROGRAMSI_H
 #define FSBL_PROGRAMSI_H
 
-#define PRINTF Fsbl_Printf
+#define PRINTF fsbl_printf
 
 #include "fsbl.h"
 #include "xil_types.h"
