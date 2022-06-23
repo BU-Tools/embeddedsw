@@ -50,6 +50,9 @@ void ProgramSI(sProgramSI config){
   PRINTF(DEBUG_GENERAL,"Si enable        @ 0x%08X(0x%08X)\r\n",
 	 config.si_enable_AXIAddr,
 	 config.si_enable_MASK);
+  u32 temp = Xil_In32(config.si_enable_AXIAddr);
+  PRINTF(DEBUG_GENERAL,"Test 0x%08X\r\n",temp);
+  
   PRINTF(DEBUG_GENERAL,"                 Val:        (0x%08X)\r\n",
 	 Xil_In32(config.si_enable_AXIAddr) & config.si_enable_MASK);
   PRINTF(DEBUG_GENERAL,"Si output enable @ 0x%08X(0x%08X)\r\n",
@@ -57,7 +60,7 @@ void ProgramSI(sProgramSI config){
 	 config.si_oe_MASK);
   PRINTF(DEBUG_GENERAL,"                 Val:        (0x%08X)\r\n",
 	 Xil_In32(config.si_oe_AXIAddr) & config.si_oe_MASK);
-  PRINTF(DEBUG_GENERAL,"Si lock          @ 0x%08X(0x%08X)\r\n",
+  PRINTF(DEBUG_GENERAL,"Si LOL/S         @ 0x%08X(0x%08X)\r\n",
 	 config.si_locked_AXIAddr,
 	 config.si_locked_MASK);
   PRINTF(DEBUG_GENERAL,"                 Val:        (0x%08X)\r\n",
@@ -105,7 +108,7 @@ void ProgramSI(sProgramSI config){
   u16 tries = 20000;
   //Waitinf for lock
   if(config.si_locked_AXIAddr != 0){
-    while((Xil_In32(config.si_locked_AXIAddr) & config.si_locked_MASK)){ //usually 6
+    while( (Xil_In32(config.si_locked_AXIAddr) & config.si_locked_MASK) ){
       usleep(1000);
       tries--;
       if(!tries){
@@ -114,7 +117,7 @@ void ProgramSI(sProgramSI config){
       }
     }
   }
-  PRINTF(DEBUG_GENERAL,"Si lock          @ 0x%08X(0x%08X)\r\n",
+  PRINTF(DEBUG_GENERAL,"Si LOL/S         @ 0x%08X(0x%08X)\r\n",
 	 config.si_locked_AXIAddr,
 	 config.si_locked_MASK);
   PRINTF(DEBUG_GENERAL,"                 Val:        (0x%08X)\r\n",
